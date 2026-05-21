@@ -1,390 +1,206 @@
 <!DOCTYPE html>
-<html>
-	<head>
-	<meta name="generator" content="Hugo 0.74.3" />
-	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Yucheng Jin | Machine Learning, LLM Hallucination Theory, AI Systems</title><link rel="apple-touch-icon" sizes="180x180" href=https://yucheng9.github.io/apple-touch-icon.png>
-	<link rel="icon" type="image/png" sizes="32x32" href=https://yucheng9.github.io/favicon-32x32.png>
-	<link rel="icon" type="image/png" sizes="16x16" href=https://yucheng9.github.io/favicon-16x16.png>
-	<link rel="manifest" href=https://yucheng9.github.io/site.webmanifest>
-	<link rel="mask-icon" href=https://yucheng9.github.io/safari-pinned-tab.svg color="#5bbad5">
-	<meta name="msapplication-TileColor" content="#da532c">
-	<meta name="theme-color" content="#ffffff">
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="alternate" type="application/rss+xml" href="https://yucheng9.github.io/index.xml" title="Yucheng Jin " />
-	<meta name="description" content="Yucheng Jin's research homepage. Research in machine learning, large language models, LLM hallucination theory, uncertainty, information theory, blockchain, cybersecurity, and AI systems." />
-<meta name="keywords" content="Yucheng Jin, Goldie Jin, LLM hallucination, large language models, AI theory, machine learning, information theory, uncertainty, measure theory, hallucination is theoretically inevitable" />
-<meta name="author" content="Yucheng Jin" />
-<link rel="canonical" href="https://yucheng9.github.io/" />
-<meta name="robots" content="index, follow" />
-<meta property="og:title" content="Yucheng Jin | Machine Learning and LLM Hallucination Theory" />
-<meta property="og:description" content="Yucheng Jin's research homepage. Research in machine learning, large language models, LLM hallucination theory, uncertainty, information theory, blockchain, cybersecurity, and AI systems." />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://yucheng9.github.io/" />
+  <title>A Mathematical Definition of LLM Outputs | Yucheng Jin</title>
+  <meta name="description" content="A Mathematical Definition of LLM Outputs: Why Projection Uncertainty is Theoretically Inevitable by Yucheng (Goldie) Jin.">
+  <meta name="keywords" content="LLM outputs, large language models, projection uncertainty, hallucination, information-neutral measure, context filtration, martingale, measure theory, Yucheng Jin, Goldie Jin">
 
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Yucheng Jin | Machine Learning and LLM Hallucination Theory"/>
-<meta name="twitter:description" content="Research in machine learning, large language models, LLM hallucination theory, uncertainty, information theory, blockchain, cybersecurity, and AI systems."/>
+  <meta property="og:title" content="A Mathematical Definition of LLM Outputs">
+  <meta property="og:description" content="Why Projection Uncertainty is Theoretically Inevitable. A measure-theoretic definition of LLM outputs by Yucheng (Goldie) Jin.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://yucheng9.github.io/">
+  <meta property="og:site_name" content="Yucheng Jin">
 
-	<meta name="citation_title" content="A Mathematical Definition of LLM Outputs: Why Hallucination is Theoretically Inevitable" />
-	<meta name="citation_author" content="Jin, Yucheng" />
-	<meta name="citation_publication_date" content="2026" />
-	<meta name="citation_pdf_url" content="https://yucheng9.github.io/a_math_definition_of_llm_outputs.pdf" />
-	<script type="application/ld+json">
-	{
-	  "@context": "https://schema.org",
-	  "@type": "Person",
-	  "name": "Yucheng Jin",
-	  "alternateName": "Goldie Jin",
-	  "url": "https://yucheng9.github.io/",
-	  "email": "mailto:yuchengjin@berkeley.edu",
-	  "alumniOf": [
-	    {"@type": "CollegeOrUniversity", "name": "University of California, Berkeley"},
-	    {"@type": "CollegeOrUniversity", "name": "University of Illinois Urbana-Champaign"},
-	    {"@type": "CollegeOrUniversity", "name": "Zhejiang University"}
-	  ],
-	  "knowsAbout": ["Machine Learning", "Large Language Models", "LLM Hallucination", "Information Theory", "Blockchain", "Cybersecurity", "AI Systems"]
-	}
-	</script>
-<link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,300italic,400italic|Raleway:500,100,300" rel="stylesheet">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="A Mathematical Definition of LLM Outputs">
+  <meta name="twitter:description" content="Why Projection Uncertainty is Theoretically Inevitable.">
 
-	<link rel="stylesheet" type="text/css" media="screen" href=https://yucheng9.github.io/css/normalize.css />
-	<link rel="stylesheet" type="text/css" media="screen" href=https://yucheng9.github.io/css/main.css />
-	<script src=https://yucheng9.github.io/js/feather.min.js></script><script src=https://yucheng9.github.io/js/main.js></script>
-	
+  <link rel="canonical" href="https://yucheng9.github.io/">
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']],
+        processEscapes: true
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    body {
+      font-family: Georgia, "Times New Roman", serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 48px 22px;
+      line-height: 1.72;
+      color: #1f1f1f;
+      background: #fff;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 36px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid #ddd;
+    }
+    h1 {
+      font-size: 2rem;
+      line-height: 1.25;
+      margin-bottom: 20px;
+    }
+    .author {
+      font-size: 1rem;
+      line-height: 1.55;
+      margin-bottom: 18px;
+    }
+    .links a {
+      display: inline-block;
+      margin: 0 8px;
+      color: #0645ad;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .links a:hover { text-decoration: underline; }
+    h2 {
+      margin-top: 2.4rem;
+      font-size: 1.45rem;
+      border-bottom: 1px solid #e3e3e3;
+      padding-bottom: 6px;
+    }
+    .abstract {
+      margin: 30px 0;
+      padding: 20px 24px;
+      background: #fafafa;
+      border: 1px solid #e4e4e4;
+      border-radius: 8px;
+    }
+    .abstract-title {
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .definition, .theorem, .corollary, .remark, .conjecture, .proof {
+      margin: 22px 0;
+      padding: 16px 20px;
+      border-left: 4px solid #555;
+      background: #fbfbfb;
+    }
+    .proof {
+      border-left-color: #999;
+      background: #fff;
+    }
+    .env-title {
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    .equation {
+      overflow-x: auto;
+      margin: 18px 0;
+      text-align: center;
+    }
+    code {
+      font-family: "Courier New", monospace;
+      background: #f6f6f6;
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+    ol {
+      padding-left: 1.5rem;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    footer {
+      margin-top: 50px;
+      color: #777;
+      font-size: 0.9rem;
+      border-top: 1px solid #eee;
+      padding-top: 18px;
+      text-align: center;
+    }
+  </style>
 </head>
 
-	<body>
-		<div class="container wrapper">
-			<div class="header">
-	<img src=https://yucheng9.github.io/profile.jpg class="profile_image">
-	<h1 class="site-title">Yucheng Jin </h1>
-	<img src=https://yucheng9.github.io/name.png class="name_image">
+<body>
+  <header>
+    <h1>A Mathematical Definition of LLM Outputs:<br>Why Projection Uncertainty is Theoretically Inevitable</h1>
+    <div class="author">
+      <strong>Yucheng (Goldie) Jin</strong><br>
+      Machine Learning Engineer III<br>
+      Expedia Group<br>
+      <code>yuchengjin@berkeley.edu</code>
+    </div>
+    <div class="links">
+      <a href="https://yucheng9.github.io/a_math_definition_of_llm_outputs.pdf">PDF</a>
+      <a href="https://github.com/yucheng9">GitHub</a>
+    </div>
+  </header>
 
-	<span style="float: right;"><a href="https://github.com/yucheng9" title="GitHub"><i data-feather="github"></i></a>
-	</span>
+  <main>
+    <section class="abstract">
+      <div class="abstract-title">Abstract</div>
+      <p>In this work, I propose a formal mathematical definition of Large Language Model (LLM) outputs by framing text generation as an information-conditioned projection of an unobservable latent semantic state space under a constructed Information-Neutral Measure. Through this measure-theoretic lens, I demonstrate that the sequence of model outputs naturally exhibits a martingale property with respect to the context filtration. Within this formalism, I prove that minimizing projection uncertainty requires structural information constraints. Crucially, I discuss the epistemic implications of this bound, suggesting that what is colloquially termed “hallucination&#x27;&#x27; can be formalized as an inevitable consequence of incomplete information filtrations. I conjecture that the emergence of Artificial General Intelligence (AGI) fundamentally relies on the system&#x27;s capability to manage these speculative semantic projections under radical uncertainty, reframing bounded generative error as a potential engine for creative inductive inference.</p>
+    </section>
 
-	<div class="site-affilation">
-		<span class="affilation"><ul class="flat">
-				<li class="name">Master of Engineering (M.Eng.) in Electrical Engineering and Computer Sciences (EECS), University of California-Berkeley (UC Berkeley)</li>
-				<li class="name">Bachelor of Engineering (B.Eng.) in Electronics and Computer Engineering (ECE), Zhejiang University (ZJU)</li>
-				<li class="name">Bachelor of Science (B.Sc.) in Computer Engineering (CompE), University of Illinois at Urbana-Champaign (UIUC)</li>
-				<li class="email">
-					<a  href="mailto:yucheng.17@intl.zju.edu.cn"key.contact>yuchengjin@berkeley.edu</a>
-					<a  href="mailto:yucheng9@illinois.edu"key.contact>yucheng9943@yahoo.com</a>
-				</li>
-			</ul></span>
-		
-	</div>
+    <h2>Introduction</h2>
+<p>Existing theoretical paradigms typically analyze Large Language Models (LLMs) via localized conditional probability transitions:</p>
+<div class="equation">\[P(y_t \mid y_{<t}, x)\]</div>
+<p>While operationally successful for autoregressive decoding mechanics, this token-centric formulation treats generation as localized sequence optimization rather than inference over a broader global semantic truth state. Consequently, it fails to provide a rigorous mathematical framework for analyzing intrinsic generative bounds under incomplete information.</p>
+<p>In this work, I depart from token-centric formulations and establish an abstract mathematical definition of LLM outputs. I define an LLM output as an orthogonal projection of an unobservable, latent semantic truth state onto an expanding context filtration stream under an Information-Neutral Measure.</p>
+<p>The primary contribution of this note is dual: first, providing a clean, measure-theoretic formalism for generative systems; second, demonstrating via conditional variance decomposition that absolute reduction of generative uncertainty is mathematically bounded prior to information closure. Within this formalism, the phenomenon of “hallucination&#x27;&#x27; is reinterpreted from an engineering optimization challenge to an intrinsic epistemic property of bounded informational systems.</p>
+<h2>Measure-Theoretic Framework and Definitions</h2>
+<p>I construct the semantic domain via an abstract probability space triplet \((\Omega, \mathcal{F}, Q_{I})\), where \(\Omega\) is the semantic sample space containing all potential linguistic and conceptual trajectories, \(\mathcal{F}\) is the global \(\sigma\)-algebra, and \(Q_{I}\) represents the Information-Neutral Measure.</p>
+<p>To formalize the interaction between empirical sequences and algebraic structures, I define the following core components:</p>
+<ol><li>\textbf{Context Filtration Stream (\(\mathcal{F}_t\)):} The sequence of historical tokens, structural prompts, and retrieved knowledge blocks available up to step \(t\). This sequence forms a completed, right-continuous filtration \(\mathbb{F} = \{\mathcal{F}_t\}_{t \ge 0}\) mapping the model&#x27;s observable informational universe, where \(\mathcal{F}_t \subset \mathcal{F}\) for all finite \(t\).</li>
+<li><strong>Information-Neutral Measure (\(Q_I\)):</strong> A probability measure implicitly parameterized by the frozen pre-trained model weights \(\mathcal{W}\). It governs the prior semantic transition probabilities over \(\Omega\) before dynamic context injection.</li>
+<li><strong>Latent Semantic State (\(\Psi\)):</strong> A square-integrable target random variable (\(\Psi \in L^2(\Omega, \mathcal{F}, Q_I)\)) representing the objective fact matrix. Crucially, \(\Psi\) is strictly \(\mathcal{F}\)-measurable, but remains non-measurable with respect to \(\mathcal{F}_t\) under incomplete information.</li>
+<li>\textbf{Information Closure (\(\mathcal{C}\)):} The terminal state where the local filtration contains sufficient structure to uniquely resolve the true latent semantic state, such that \(\mathcal{F}_t \equiv \mathcal{F}\).</li>
+<li><strong>Semantic State Transition (\(E\)):</strong> A specific event subset \(E \in \mathcal{F}\) corresponding to a coherent semantic assertion.</li>
+<li>\textbf{Generation Prompt Target (\(\mathcal{T}\)):} A structured semantic boundary specifying the target properties of the generated text.</li>
+<li><strong>Output Sequence (\(y^*\)):</strong> The crystallized token sequence realized in text space once the generation process terminates.</li>
+<li>\textbf{Ground-Truth Verifier (\(\mathcal{O}\)):} An external environment providing absolute verification of a statement, collapsing the probabilistic space into a deterministic result.</li>
+<li>\textbf{Attention Component (\(\mathcal{P}_i\)):} Internal model structural sub-units formalized as sub-\(\sigma\)-algebras \(\mathcal{G}_i \subset \mathcal{F}\), whose intersections and updates drive the evolution of \(\mathcal{F}_t\).</li>
+<li>\textbf{Predictive Belief (\(\mathcal{B}\)):} The inner subjective probability distribution over \(\Omega\), represented via the model&#x27;s logit configurations prior to output collapse.</li></ol>
+<h2>The Mathematical Definition of LLM Outputs</h2>
+<p>With the informational space established, I formalize the central definition of an LLM output:</p>
+<div class="definition"><div class="env-title">Definition (LLM Output Operator)</div><p>Let \(\Psi \in L^2(\Omega, \mathcal{F}, Q_I)\) be the \(\mathcal{F}\)-measurable latent semantic state. The output of a Large Language Model at step \(t\), denoted as \(P_t\), is defined as the information-conditioned orthogonal projection of \(\Psi\) onto the closed subspace of \(\mathcal{F}_t\)-measurable functions under the weight-parameterized Information-Neutral Measure \(Q_I\):</p>
+<div class="equation">\[P_t = \Pi_{Q_I}(\Psi \mid \mathcal{F}_t) \equiv \mathbb{E}_{Q_I}[\Psi \mid \mathcal{F}_t]\]</div></div>
+<p>This definition formalizes generation not as a mechanical token matching sequence, but as a statistical inference projection. Prompts and contexts do not synthesize truth; rather, they serve as the conditional filtration \(\mathcal{F}_t\) through which the model projects its internal Predictive Belief \(\mathcal{B}\).</p>
+<div class="remark"><div class="env-title">Remark (Mathematical Abstraction)</div><p>While the mathematical map from conditional expectation to a martingale is direct, the core intellectual contribution of Definition 1 lies in its ontological shift. By interpreting empirical token contexts as an evolving filtration \(\mathcal{F}_t\) and model weights as defining an Information-Neutral Measure \(Q_I\), the heuristics of deep learning generation are mapped into a structured, closed-form functional space.</p></div>
+<div class="remark"><div class="env-title">Remark (Analogy to von Neumann Cut and Wave-Function Collapse)</div><p>The sequential crystallization of LLM outputs under the Verifier \(\mathcal{O}\) provides a conceptual parallel to the “von Neumann Cut&#x27;&#x27; in quantum measurement theory [<a href=\"#ref-vonneumann1932\">vonneumann1932</a>]. Prior to semantic selection, the model maintains a predictive belief superposition over the semantic space \(\Omega\). The injection of contextual filtration \(\mathcal{F}_t\) and the final intervention of the external verifier \(\mathcal{O}\) acts as the subjective perception boundary—forcing the infinite probabilistic semantic continuity to collapse into a deterministic macro-textual reality \(y^*\).</p></div>
+<div class="conjecture"><div class="env-title">Conjecture (AGI and Semantic Wave-Function Collapse)</div><p>This measure-theoretic framing offers an alternative epistemological lens regarding Artificial General Intelligence (AGI). Traditional paradigms view AGI as an asymptotic convergence of next-token prediction error to zero. In contrast, this framework implies that general intelligence may be characterized by the conscious capability to manipulate the filtration boundaries themselves—deliberately managing semantic superposition under radical uncertainty. Under this framing, modeling LLM output as an information-conditioned projection operator provides a foundational biomimetic pathway.</p></div>
+<div class="conjecture"><div class="env-title">Conjecture (The Epistemic Role of Projection Error)</div><p>Expanding upon Conjecture 1, I propose that what is colloquially termed “hallucination&#x27;&#x27; (formally defined within this formalism as nonzero projection variance) is an inevitable epistemic mechanism required for artificial generic cognition under incomplete information. Equation (5) and Corollary 1 mathematically guarantee that under incomplete information (\(\mathcal{F}_t \neq \mathcal{F}\)), the orthogonal projection error variance \(\sigma_t^2\) is strictly bounded away from zero for non-degenerate states. Human intelligence navigates reality precisely by committing similar speculative projections—forming hypotheses and creative inductive leaps across unobservable semantic gaps. Managing projection variance, rather than attempting its absolute elimination, may represent a necessary design paradigm for advanced cognitive architectures.</p></div>
+<h2>Why Projection Uncertainty is Theoretically Inevitable</h2>
+<p>Using Definition 1, I establish the mathematical necessity of projection uncertainty under conditions of incomplete information.</p>
+<div class="theorem"><div class="env-title">Theorem (The Martingale Property of Generation)</div><p>The stochastic sequence of LLM outputs \(\{P_t\}_{t \ge 0}\) forms a Martingale with respect to the context filtration stream \(\mathbb{F}\) under the Information-Neutral Measure \(Q_I\).</p></div>
+<div class="proof"><div class="env-title">Proof</div><p>By Definition 1, \(P_t = \mathbb{E}_{Q_I}[\Psi \mid \mathcal{F}_t]\). For any sequential steps \(s\) and \(t\) such that \(s \le t\), the sub-\(\sigma\)-algebras satisfy \(\mathcal{F}_s \subseteq \mathcal{F}_t\). Applying the tower property of conditional expectation:</p>
+<div class="equation">\[\mathbb{E}_{Q_I}[P_t \mid \mathcal{F}_s] = \mathbb{E}_{Q_I}[\mathbb{E}_{Q_I}[\Psi \mid \mathcal{F}_t] \mid \mathcal{F}_s] = \mathbb{E}_{Q_I}[\Psi \mid \mathcal{F}_s] = P_s\]</div>
+<p>Thus, the expected future projection conditional on current historical filtration is invariant and equals the current projection.</p></div>
+<p>To evaluate the mathematical boundary of generation errors, let \(\Psi^*\) be the oracle reality verified by \(\mathcal{O}\), and let \(\sigma_t^2\) define the semantic error variance at step \(t\):</p>
+<div class="equation">\[\sigma_t^2 = \mathbb{E}_{Q_I}[(\Psi - P_t)^2 \mid \mathcal{F}_t]\]</div>
+<div class="theorem"><div class="env-title">Theorem (Monotonic Variance Bound Under Filtration Expansion)</div><p>The expected factual error variance of an LLM output is strictly non-increasing over time under context filtration expansion.</p></div>
+<div class="proof"><div class="env-title">Proof</div><p>Applying the law of total variance to the error space between steps \(s\) and \(t\) where \(s \le t\):</p>
+<div class="equation">\[\mathbb{E}_{Q_I}[(\Psi - P_s)^2 \mid \mathcal{F}_s] = \mathbb{E}_{Q_I}[(\Psi - P_t)^2 \mid \mathcal{F}_s] + \mathbb{E}_{Q_I}[(P_t - P_s)^2 \mid \mathcal{F}_s]\]</div>
+<p>Taking the total expectation across the measure space yields:</p>
+<div class="equation">\[\mathbb{E}_{Q_I}[\sigma_s^2] = \mathbb{E}_{Q_I}[\sigma_t^2] + \mathbb{E}_{Q_I}[(P_t - P_s)^2]\]</div>
+<p>Since \(\mathbb{E}_{Q_I}[(P_t - P_s)^2] \ge 0\), it directly follows that:</p>
+<div class="equation">\[\mathbb{E}_{Q_I}[\sigma_s^2] \ge \mathbb{E}_{Q_I}[\sigma_t^2]\]</div></div>
+<p>From these derivations, I state the central boundary condition of generative accuracy:</p>
+<div class="corollary"><div class="env-title">Corollary (Bounded Uncertainty Under Incomplete Filtration)</div><p>Let \(\Psi \in L^2(\Omega, \mathcal{F}, Q_I)\) be a non-degenerate latent semantic state. Within this formalism, define a structural hallucination as any state where the information projection deviates from oracle reality: \(\Pi_{Q_I}(\Psi \mid \mathcal{F}_t) \neq \Psi^*\). Assuming that \(\Psi\) is not \(Q_I\)-almost surely equal to an \(\mathcal{F}_t\)-measurable random variable, the expected error variance \(\mathbb{E}_{Q_I}[\sigma_t^2]\) is strictly bounded away from zero:</p>
+<div class="equation">\[\mathbb{E}_{Q_I}[\sigma_t^2] > 0 \quad \forall \quad \mathcal{F}_t \neq \mathcal{F}\]</div>
+<p>This bound demonstrates that zero projection error cannot generally be achieved under incomplete information filtrations, and a necessary condition for the minimization of projection variance is the expansion toward complete Information Closure (\(\mathcal{C}\)).</p></div>
+<h2>Conclusion</h2>
+<p>This foundational note provides a definition of LLM outputs as information-conditioned orthogonal projections. By framing the context stream as a filtration \(\mathcal{F}_t\) and verifying outputs via a martingale structure, I demonstrate that projection uncertainty is an inevitable epistemic property of generating text under incomplete information. This bound sets a theoretical limit for generative AI systems, suggesting that future research focus on formalizing uncertainty bounds rather than attempting absolute hallucination eradication.</p>
 
-	<nav class="nav">
-		<ul class="flat">
-			
-		</ul>
-	</nav>
-</div>
+    <h2>References</h2><ol><li id="ref-vonneumann1932">J.~von Neumann. {<em>Mathematical Foundations of Quantum Mechanics}</em>. Princeton University Press, Princeton, NJ, 1932. (Translated by R. T. Beyer, 1955).</li></ol>
+  </main>
 
-			<div class="introduction"><span>
-		I am currently a Machine Learning Engineer at Expedia Group. I received my Master of Engineering degree in Electrical Engineering and Computer Sciences from University of California-Berkeley. Before Berkeley, I graduated from a dual-degree program jointly held by Zhejiang University and University of Illinois at Urbana-Champaign. I am highly resilient, dedicated, self-motivated, optimistic, and I enjoy facing new challenges, solving novel problems, and bringing creative ideas into reality.
-	</span>
-	<br><span>
-		<b>Research Interests:</b> Machine Learning, Large Language Models, LLM Hallucination Theory, Information Theory, AI Systems, Blockchain, Cybersecurity
-	</span>
-</div>
-
-			<div class="introduction">
-	
-	<h3>Publications</h3><ul>
-		<li>
-			<p class="news">
-				[1] Yucheng Jin. “A Mathematical Definition of LLM Outputs: Why Hallucination is Theoretically Inevitable”. Preprint. 2026.
-				[<a href="https://yucheng9.github.io/a_math_definition_of_llm_outputs.pdf">pdf</a>]
-			</p>
-		</li>
-
-		<li>
-			<p class="news">
-				[2] S. Li, Yucheng Jin, P. Hsu, and Y. Luo. “NFT.mine: An xDeepFM-based Recommender System for Non-fungible Token (NFT) Buyers”. arXiv:2306.03942. Jun. 2023.
-			</p>
-		</li>	
-		<li>
-			<p class="news">
-				[3] Z. Zhao, P. Chen, and Yucheng Jin. “Reinforcement Learning for Resilient Power Grids”. arXiv:2212.04069. Dec. 2022.
-			</p>
-		</li>
-		<li>
-			<p class="news">
-				[4] Yucheng Jin, L. Yang, and C. Chiang. “Identifying Exoplanets with Machine Learning Methods: A Preliminary Study”. <em>International Journal on Cybernetics and Informatics (IJCI)</em>. Vol.11, No.1/2, Apr. 2022.
-			</p>
-		</li>
-		
-		<li>
-			<p class="news">
-				[5] Yucheng Jin, X. Yang, C. Yu, and L. Yang. “Educational Data Mining: Discovering Principal Factors for Better Academic Performance”. <em>3rd International Conference on Big Data Engineering and Technology (BDET 2021)</em>. Singapore. Jan. 2021.
-			</p>
-		</li>
-
-		<li>
-			<p class="news">
-				[6] A. Ye, B. Pang, Yucheng Jin, and J. Cui. “A YOLO-based Neural Network with VAE for Intelligent Garbage Detection and Classification”. <em>3rd International Conference on Algorithms, Computing, and Artificial Intelligence (ACAI 2020)</em>. Sanya, China. Dec. 2020. 
-			</p>
-		</li>
-		
-	</ul></div>
-
-			<div class="introduction">
-	</div>
-
-			<div class="introduction">
-	
-	<h3>Teaching Experience</h3><ul>
-		
-		<li>
-			<p class="course">
-				Teaching Assistant, ECE365: Data Science and Engineering, Spring 2021
-				<br>
-			</p>
-      <p class="collaborators">
-	<div class="advisor"> Instructor: <a href="https://ece.illinois.edu/about/directory/faculty/vvv"> Prof. Venugopal Varadachari Veeravalli</a> (Henry Magnuski Professor at University of Illinois at Urbana-Champaign)</div>
-      </p>
-		<li>
-			
-			<p class="course">
-				Teaching Assistant, PHYS 213/214 Lab: Thermal and Quantum Physics, Spring 2021
-				<br>
-			</p>
-		<li>
-	
-			<p class="course">
-				Teaching Assistant, ECE120: Introduction to Computing, Spring 2020
-				<br>
-			</p>
-      <p class="collaborators">
-	<div class="advisor"> Instructor: <a href="http://www.ncsa.illinois.edu/People/kindr/"> Prof. Volodymyr Kindratenko</a> (Associate Professor at University of Illinois at Urbana-Champaign)</div>
-      </p>
-		</li>
-		
-	</ul>
-	</div>
-
-			<div class="introduction">
-	
-	<h3>Research Experience</h3>
-	<ul>
-		
-		<li>
-			<div class="project">A Mathematical Definition of LLM Outputs: Why Hallucination is Theoretically Inevitable<br></div>
-			<span class="code_blog">
-				[<a href="https://yucheng9.github.io/a_math_definition_of_llm_outputs.pdf">pdf</a>]
-			</span>
-			<div class="project_description">
-			This work proposes a measure-theoretic formulation of large language model outputs and frames hallucination as a theoretically inevitable consequence of probabilistic generation under incomplete information. The paper connects uncertainty, conditional information, and output realization in AI systems.
-			</div>
-		</li>
-
-		
-		<li>
-			<div class="project">NFT.mine: An xDeepFM-based Recommender System for Non-fungible Token (NFT) Buyers<br></div>
-
-			
-			<span class="code_blog">
-				
-				[<a href="https://arxiv.org/pdf/2306.03942.pdf">pdf</a>]
-				
-			</span>
-
-			<div class="advisor"> Advisor: <a href="https://www2.eecs.berkeley.edu/Faculty/Homepages/song.html"> Prof. Dawn Song</a> (Professor at University of California-Berkeley)</div>
-			
-			<img src=https://yucheng9.github.io/files/imgs/fig7.png class="project_image">
-			
-			<div class="project_description">
-			Non-fungible token (NFT) is a tradable unit of data stored on the blockchain which can be associated with some digital asset as a certification of ownership. The past several years have witnessed the exponential growth of the NFT market. In 2021, the NFT market reached its peak with more than $40 billion trades. Despite the booming NFT market, most NFT-related studies focus on its technical aspect, such as standards, protocols, and security, while our study aims at developing a pioneering recommender system for NFT buyers. In this paper, we introduce an extreme deep factorization machine (xDeepFM)-based recommender system, NFT.mine, which achieves real-time data collection, data cleaning, feature extraction, training, and inference. We used data from OpenSea, the most influential NFT trading platform, to testify the performance of NFT.mine. As a result, experiments showed that compared to traditional models such as logistic regression, naive Bayes, random forest, etc., NFT.mine outperforms them with higher AUC and lower cross entropy loss and outputs personalized recommendations for NFT buyers.
-			</div>
-
-		</li>		
-		
-		<li>
-			<div class="project">Reinforcement Learning for Resilient Power Grids<br></div>
-
-			
-			<span class="code_blog">
-				
-				[<a href="https://arxiv.org/pdf/2212.04069.pdf">pdf</a>]
-				
-			</span>
-
-			<div class="advisor"> Advisor: <a href="https://www2.eecs.berkeley.edu/Faculty/Homepages/sangiovanni-vicentelli.html"> Prof. Alberto Sangiovanni-Vincentelli</a> (Edgar L. and Harold H. Buttner Chair Professor at University of California-Berkeley)</div>
-			
-			<img src=https://yucheng9.github.io/files/imgs/fig6.png class="project_image">
-			
-			<div class="project_description">
-			Traditional power grid systems have become obsolete under more frequent and extreme natural disasters. Reinforcement learning (RL) has been a promising solution for resilience given its successful history of power grid control. However, most power grid simulators and RL interfaces do not support simulation of power grid under large-scale blackouts or when the network is divided into sub-networks. In this study, we proposed an updated power grid simulator built on Grid2Op, an existing simulator and RL interface, and experimented on limiting the action and observation spaces of Grid2Op. By testing with DDQN and SliceRDQN algorithms, we found that reduced action spaces significantly improve training performance and efficiency. In addition, we investigated a low-rank neural network regularization method for deep Q-learning, one of the most widely used RL algorithms, in this power grid control scenario. As a result, the experiment demonstrated that in the power grid simulation environment, adopting this method will significantly increase the performance of RL agents.
-			</div>
-
-		</li>
-
-		<li>
-			<div class="project">Identifying Exoplanets with Machine Learning Methods: A Preliminary Study<br></div>
-
-			
-			<span class="code_blog">
-				
-				[<a href="https://arxiv.org/abs/2204.00721">pdf</a>]
-				
-			</span>
-
-			<div class="advisor"> Advisor: <a href="https://statistics.berkeley.edu/people/fernando-perez"> Prof. Fernando Pérez</a> (Associate Professor at University of California-Berkeley)</div>
-			
-			<img src=https://yucheng9.github.io/files/imgs/Fig5.png class="project_image">
-			
-			<div class="project_description">
-			The discovery of habitable exoplanets has long been a heated topic in astronomy. Traditional methods for exoplanet identification include the wobble method, direct imaging, gravitational microlensing, etc., which not only require a considerable investment of manpower, time, and money, but also are limited by the performance of astronomical telescopes. In this study, we proposed the idea of using machine learning methods to identify exoplanets. We used the Kepler dataset collected by NASA from the Kepler Space Observatory to conduct supervised learning, which predicts the existence of exoplanet candidates as a three-categorical classification task, using decision tree, random forest, naïve Bayes, and neural network; we used another NASA dataset consisted of the confirmed exoplanets data to conduct unsupervised learning, which divides the confirmed exoplanets into different clusters, using k-means clustering. As a result, our models achieved accuracies of 99.06%, 92.11%, 88.50%, and 99.79%, respectively, in the supervised learning task and successfully obtained reasonable clusters in the unsupervised learning task.
-			</div>
-
-		</li>
-		
-		<li>
-			<div class="project">Machine Learning Security: Can Defense against Centralized Backdoors Work on Distributed Backdoors?<br></div>
-
-			
-			<span class="code_blog">
-				
-				[<a href="files/Research_UChicago_Final_Report.pdf">pdf</a>]
-				
-			</span>
-
-			<div class="advisor"> Advisor: <a href="http://people.cs.uchicago.edu/~ravenben/"> Prof. Ben Y. Zhao</a> (Neubauer Professor at University of Chicago)</div>
-			
-			<img src=https://yucheng9.github.io/files/imgs/Fig1.png class="project_image">
-			
-			<div class="project_description">
-			Federated learning trains a global model distributedly by aggregating local agents’ models; therefore, some malicious agents can inject backdoors in local models to attack the global model, referred to as distributed backdoors. In this study, my objective is to determine whether the traditional approach for centralized backdoor defense works on defending distributed backdoors. I reproduced the Model Poisoning attack, a representative pixel-patterned distributed backdoor attack against federated learning proposed by A. N. Bhagoji et al. (2019) on MNIST and CIFAR-10 datasets. I further testified the effectiveness of Neural Cleanse, a generic defense against centralized backdoors proposed by B. Wang et al. (2019), by running Neural Cleanse on the poisoned models. The result of Neural Cleanse is false-positive, which demonstrates that Neural Cleanse as an effective defense against centralized backdoors could not recognize distributed backdoors.
-			</div>
-
-		</li>
-		
-		<li>
-			<div class="project">Educational Data Mining (EDM): Discovering Determinants of Better Academic Performance<br></div>
-			
-			<span class="code_blog">
-				
-				[<a href="files/Research_SRTP1.pdf">pdf</a>]
-
-			</span>
-		
-			<div class="advisor"> Advisor: <a href="https://zjui.intl.zju.edu.cn/en/team/teacher"> Prof. Liangjing Yang</a> (Assistant Professor at Zhejiang University)</div>
-			<div class="advisor"> Advisor: <a href="http://www.cad.zju.edu.cn/home/jin/"> Prof. Xiaogang Jin</a> (Professor at Zhejiang University)</div>
-			
-			<img src=https://yucheng9.github.io/files/imgs/Fig2.png class="project_image">
-			
-			<div class="project_description">
-			The objective of this study is to use Educational Data Mining (EDM) techniques to discover principal factors that affect students’ academic performance. We crawled a dataset from the China Education Panel Survey (CEPS) with 10,279 samples, then by clustering student-related and parents-related variables into three categories: demographic and family background information (Demographic), self-perceived willingness for education (Willingness), perceived family interaction (Interaction), we implemented various EDM methodologies such as linear regression, regression tree, and random forest on the dataset. As the first attempt to conduct a comprehensive and quantitative investigation into the principal factors that influence Chinese junior high school students’ academic performance on a nationally representative survey, this study not only summarizes, explains, and compares different principal factors discovered by different EDM techniques, but also provides some insight for mitigating China’s educational inequality. 
-			</div>
-
-		</li>
-		
-		<li>
-			<div class="project">The Development of a Neural Network-based Solution for Intelligent Waste Recycling<br></div>
-		
-			<span class="code_blog">
-				
-				[<a href="files/Research_SRTP2.pdf">pdf</a>]
-	
-			</span>
-			
-			<div class="advisor"> Advisor: <a href="https://zjui.intl.zju.edu.cn/en/team/teacher"> Prof. Jiahuan Cui</a> (Assistant Professor at Zhejiang University)</div>
-			<div class="advisor"> Advisor: <a href="http://www.cad.zju.edu.cn/home/jin/"> Prof. Xiaogang Jin</a> (Professor at Zhejiang University)</div>
-			
-			<img src=https://yucheng9.github.io/files/imgs/Fig3.png class="project_image">
-			
-			<div class="project_description">
-			This study aims at developing a pragmatic solution for intelligent garbage recycling that can be deployed on portable, real-time, and energy-efficient edge-computing devices. We proposed a novel YOLO-based neural network model with Variational Autoencoder (VAE) to increase the accuracy of classification, accelerate the speed of calculation, and reduce the model size to make it feasible in the real-world garbage recycling scenario. The model is consisted of a convolutional feature extractor, a convolutional predictor, and a decoder. After the training process, this model can achieve a correct rate of 69.70% with a total number of 32.1 million parameters and a speed of processing 60 Frames Per Second (FPS), surpassing the performance of other existing models such as YOLO v1 and Fast R-CNN.
-			</div>
-
-		</li>
-		
-		<li>
-			<div class="project">Modeling of Potential Migration and Fishing of Scottish Mackerel and Herring<br></div>
-
-			<span class="code_blog">
-				
-				[<a href="files/Research_MCM.pdf">pdf</a>]
-
-			</span>
-			
-			<div class="advisor"> Advisor: <a href="http://www.cad.zju.edu.cn/home/jin/"> Prof. Xiaogang Jin</a> (Professor at Zhejiang University)</div>
-			
-			<img src=https://yucheng9.github.io/files/imgs/Fig4.png class="project_image">
-			
-			<div class="project_description">
-			This project gives a solution to Problem A of the 2020 Mathematical Contest in Modeling, and was awarded Meritorious Winner Prize (top 6% among 13,749 teams). To model the potential migration and fishing of Scottish mackerel and herring, we predicted the change of the North Atlantic sea temperature based on three authoritative datasets by Holt-Winter’s seasonal forecasting method, realized data visualization through heatmaps, and utilized a probabilistic method to simulate the potential future habitats of Scottish mackerel and herring by Markov process. Finally, based on the estimated migration of Scottish mackerel and herring, we developed an economic model to predict future fishing profits by cost-benefit analysis.  
-			</div>
-		</li>
-
-		</ul>
-	
-</div>
-
-			<div class="introduction">
-	<h3>Professional Experience</h3><span>
-		<li>
-			<p class="course">
-				Machine Learning Engineer @ Expedia Group. Seattle, Washington. Present.
-				<br>
-			</p>
-      </p>
-		</li>
-
-		<li>
-			<p class="course">
-				Data Engineer Intern @ Nielsen. Beijing, China. Jan. 2020 - Apr. 2020.
-				<br>
-			</p>
-      </p>
-		</li>
-
-		<li>
-			<p class="course">
-				Research Intern @ Eaton. Shanghai, China. Jul. 2019 - Aug. 2019.
-				<br>
-			</p>
-      </p>
-		</li>
-
-		<h3>Volunteer Experience</h3><ul>
-
-			<img src=https://yucheng9.github.io/files/imgs/Volunteer.png class="project_image">
-		
-			<li>
-				<p class="course">
-					Summer Volunteer Teaching in Qiandongnan, Guizhou Province, Jul. 2015, Jul. 2017, Jul. 2018
-					<br>
-		  </p>
-			</li>
-			
-		</ul>
-		</div>
-	
-				<div class="introduction">
-
-	</span>
-	<br></div>
-
-		</div>
-		</div>
-		<div class="footer wrapper">
-	<nav class="nav">
-		<div><a href="https://github.com/hadisinaee/avicenna">Avicenna Theme</a> | Built with <a href="https://gohugo.io">Hugo</a></div>
-	</nav>
-</div>
-
-<script>
-	feather.replace()
-
-</script>
-		
-		<script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=dfdde0&w=222&t=n&d=G7NOG9OyvS_--aO1E41KIFjz_0sLub4wvM_3ktSxaLo&co=ffffff&cmo=c85a5f&cmn=aa0000&ct=cdd4d9'></script>
-	</body>
-
+  <footer>
+    © 2026 Yucheng (Goldie) Jin
+  </footer>
+</body>
 </html>
